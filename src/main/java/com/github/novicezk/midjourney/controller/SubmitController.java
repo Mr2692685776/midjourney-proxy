@@ -218,6 +218,8 @@ public class SubmitController {
     @GetMapping("/show")
     public void dictvoice(HttpServletResponse response,String imageUrl) throws IOException {
         ServletOutputStream outputStream = response.getOutputStream();
+	    response.setContentType("png");
+            response.addHeader("Content-Disposition", "attachment; filename=image.png");
         URL url = new URL(imageUrl);
         URLConnection conn = url.openConnection();
         InputStream inputStream = conn.getInputStream();

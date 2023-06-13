@@ -201,7 +201,7 @@ public class SubmitController {
 		return this.taskService.submitBlend(task, dataUrlList);
 	}
 	
-    @GetMapping
+    @GetMapping("/show")
     public void dictvoice(HttpServletResponse response,String imageUrl) throws IOException {
         ServletOutputStream outputStream = response.getOutputStream();
         URL url = new URL(imageUrl);

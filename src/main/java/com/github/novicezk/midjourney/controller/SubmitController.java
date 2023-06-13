@@ -200,6 +200,23 @@ public class SubmitController {
 		task.setDescription("/blend " + task.getId() + " " + dataUrlList.size());
 		return this.taskService.submitBlend(task, dataUrlList);
 	}
+	
+    @GetMapping
+    public void dictvoice(HttpServletResponse response,String imageUrl) throws IOException {
+        ServletOutputStream outputStream = response.getOutputStream();
+        URL url = new URL(imageUrl);
+        URLConnection conn = url.openConnection();
+        InputStream inputStream = conn.getInputStream();
+
+        byte[] buffer = new byte[4096];
+        int bytesRead = -1;
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, bytesRead);
+        }
+
+        outputStream.close();
+        inputStream.close();
+    }
 
 	private Task newTask(BaseSubmitDTO base) {
 		Task task = new Task();

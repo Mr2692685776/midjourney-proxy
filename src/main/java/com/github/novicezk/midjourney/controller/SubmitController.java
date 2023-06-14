@@ -52,7 +52,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
-
+import java.util.regex.Pattern;
 
 @Api(tags = "任务提交")
 @RestController
@@ -75,11 +75,8 @@ public class SubmitController {
 		Task task = newTask(imagineDTO);
 		task.setAction(TaskAction.IMAGINE);
 		task.setPrompt(prompt);
-		String promptEn;
-		int paramStart = prompt.indexOf(" --");
-		if (paramStart > 0) {
-			promptEn = this.translateService.translateToEnglish(prompt.substring(0, paramStart)).trim() + prompt.substring(paramStart);
-		} else {
+		String promptEn = null;
+		if (hasChinese(prompt)) {
 			promptEn = this.translateService.translateToEnglish(prompt).trim();
 		}
 		if (CharSequenceUtil.isBlank(promptEn)) {
@@ -243,4 +240,9 @@ public class SubmitController {
 		task.setProperty(Constants.TASK_PROPERTY_NOTIFY_HOOK, notifyHook);
 		return task;
 	}
+
+	public static boolean hasChinese(String str) {
+		Pattern pattern = Pattern.compile("[\u4e00-\u9fa5]");
+		return pattern.matcher(str).find();
+	}	
 }

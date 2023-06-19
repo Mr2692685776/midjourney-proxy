@@ -23,6 +23,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import org.json.JSONStringer;
 
 @Slf4j
 @Service
@@ -216,8 +217,10 @@ public class DiscordServiceImpl implements DiscordService {
 	}
 
 	private Message<Void> postJsonAndCheckStatus(String paramsStr) {
+		log.info("paramsStr：{}",paramsStr);
 		try {
 			ResponseEntity<String> responseEntity = postJson(paramsStr);
+			log.info("responseEntity：{}", JSONStringer.valueToString(responseEntity));
 			if (responseEntity.getStatusCode() == HttpStatus.NO_CONTENT) {
 				return Message.success();
 			}
